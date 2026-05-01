@@ -54,6 +54,8 @@ set(sources
         rfc2131.c
         rfc3315.c
         rrfilter.c
+        sd-daemon.c
+        sd-daemon.h
         slaac.c
         tables.c
         tftp.c
@@ -62,6 +64,8 @@ set(sources
         )
 
 add_library(dnsmasq OBJECT ${sources})
+include(CheckIncludeFile)
+check_include_file("systemd/sd-daemon.h" HAVE_SYSTEMD)
 target_compile_definitions(dnsmasq PRIVATE VERSION=\"${DNSMASQ_VERSION}\")
 target_compile_definitions(dnsmasq PRIVATE CONFFILE=\"/etc/pihole/dnsmasq.conf\")
 if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
