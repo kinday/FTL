@@ -906,7 +906,7 @@ static int make_sock(union mysockaddr *addr, int type, int dienow)
   int family = addr->sa.sa_family;
   int fd, rc, opt = 1;
   
-#ifdef HAVE_SYSTEMD
+#ifdef USE_SYSTEMD
   int sd_fds = sd_listen_fds(0);
   if (sd_fds > 0) {
     for(int fd_base = 0; fd_base < sd_fds; fd_base++)

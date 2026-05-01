@@ -38,7 +38,7 @@
 #include <libgen.h>
 #endif
 
-#ifdef HAVE_SYSTEMD
+#ifdef USE_SYSTEMD
 #include <systemd/sd-daemon.h>
 #endif
 
@@ -891,7 +891,7 @@ void close_fds(long max_fd, int spare1, int spare2, int spare3)
 	  if(is_shm_fd(fd))
 	    continue;
 	  /**********************************/
-#ifdef HAVE_SYSTEMD
+#ifdef USE_SYSTEMD
     int sd_fds = sd_listen_fds(0);
     if (sd_fds > 0 && fd < SD_LISTEN_FDS_START + sd_fds)
       continue;

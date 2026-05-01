@@ -16,7 +16,7 @@
 
 #include "dnsmasq.h"
 
-#ifdef HAVE_SYSTEMD
+#ifdef USE_SYSTEMD
 #include <systemd/sd-daemon.h>
 #endif
 
@@ -39,7 +39,7 @@ static int check_listen_addrs(struct in_addr local, int if_index, char *label,
 
 static int make_fd(int port)
 {
-#ifdef HAVE_SYSTEMD
+#ifdef USE_SYSTEMD
   // first check if systemd already did that for us
   for(int fd_base = 0; fd_base < sd_listen_fds(0); fd_base++)
     if (sd_is_socket_inet(fd_base + SD_LISTEN_FDS_START, PF_INET, SOCK_DGRAM,0, port))
