@@ -906,6 +906,24 @@ static int make_sock(union mysockaddr *addr, int type, int dienow)
   int family = addr->sa.sa_family;
   int fd, rc, opt = 1;
   
+#ifdef HAVE_SYSTEMD
+  int sd_fds = sd_listen_fds(0);
+  if (sd_fds > 0) {
+    for(int fd_base = 0; fd_base < sd_fds; fd_base++)
+    {
+        int port = prettyprint_addr(addr, daemon->namebuff);
+
+        if (sd_is_socket_inet(fd_base + SD_LISTEN_FDS_START, family, type, type == SOCK_STREAM ? 1 : 0, port))
+          {
+            fd = fd_base + SD_LISTEN_FDS_START;
+
+            if (type != SOCK_STREAM)
+              goto setup;
+            return fd;
+          }
+    }
+  } else
+#endif
   if ((fd = socket(family, type, 0)) == -1)
     {
       int port, errsave;
@@ -959,7 +977,8 @@ static int make_sock(union mysockaddr *addr, int type, int dienow)
   
   if ((rc = bind(fd, (struct sockaddr *)addr, sa_len(addr))) == -1)
     goto err;
-  
+
+setup:
   if (type == SOCK_STREAM)
     {
 #ifdef TCP_FASTOPEN
