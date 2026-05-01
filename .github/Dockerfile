@@ -21,11 +21,11 @@ ENV TERM=xterm
 # This is not supported by Github Actions as it does not provide a TTY to the docker build container
 RUN sed -i '/buffer_with_truncation /d' /bats-core/libexec/bats-core/bats-format-pretty
 
+RUN apk add elogind-dev
+
 # Build FTL
 # Remove possible old build files
 RUN rm -rf cmake && \
-# Install libsystemd
-    bash prepare.sh && \
 # Build and test FTL
     bash build.sh "-DSTATIC=${STATIC}" ${BUILD_OPTS} && \
 # Copy FTL binary to root directory
