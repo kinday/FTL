@@ -165,6 +165,10 @@ extern int capget(cap_user_header_t header, cap_user_data_t data);
 #  include <nettle/nettle-meta.h>
 #endif
 
+#ifdef HAVE_SYSTEMD
+#include "sd-daemon.h"
+#endif
+
 /* daemon is function in the C library.... */
 #define daemon dnsmasq_daemon
 
