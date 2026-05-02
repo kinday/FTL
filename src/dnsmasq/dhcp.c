@@ -43,7 +43,7 @@ static int make_fd(int port)
   // first check if systemd already did that for us
   for(int fd_base = 0; fd_base < sd_listen_fds(0); fd_base++)
     if (sd_is_socket_inet(fd_base + SD_LISTEN_FDS_START, PF_INET, SOCK_DGRAM,0, port))
-        return fd_base + SD_LISTEN_FDS_START;
+      return fd_base + SD_LISTEN_FDS_START;
 #endif
 
   int fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);

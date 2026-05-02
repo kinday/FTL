@@ -916,6 +916,7 @@ static int make_sock(union mysockaddr *addr, int type, int dienow)
         if (sd_is_socket_inet(fd_base + SD_LISTEN_FDS_START, family, type, type == SOCK_STREAM ? 1 : 0, port))
           {
             fd = fd_base + SD_LISTEN_FDS_START;
+            log_info("using systemd file descriptor %d", fd);
 
             if (type != SOCK_STREAM)
               goto setup;
